@@ -31,7 +31,7 @@ class Model {
     
     return newRecord.save()
       .then(savedRecord => {
-        Q.publish('database', 'create', {action:'create', collection: this.schema.modelName, id:newRecord.id});
+        Q.publish('database', 'create', {action:'create', collection: this.schema.modelName, _id:newRecord.id});
         return savedRecord;
       });
   }
