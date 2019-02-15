@@ -9,4 +9,7 @@ const mongooseOptions = {
 };
 mongoose.connect(process.env.MONGODB_URI, mongooseOptions);
 
+const q = require('./src/lib/q/publisher.js');
+global.Q = new q();
+
 require('./src/app.js').start(process.env.PORT);

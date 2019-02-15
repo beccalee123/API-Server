@@ -28,7 +28,12 @@ class Model {
    */
   post(record) {
     let newRecord = new this.schema(record);
-    return newRecord.save();
+    
+    return newRecord.save()
+      .then(savedRecord => {
+        Q.publish('database', 'create', {action:'create', collection: this.schema.modelName, id:newRecord.id});
+        return savedRecord;
+      });
   }
 
   /**
@@ -38,6 +43,7 @@ class Model {
    * @returns {*}
    */
   put(_id, record) {
+    Q.publish('database', 'update', {action:'update', collection: this.schema.modelName, id:_id});
     return this.schema.findByIdAndUpdate(_id, record, {new:true});
   }
 
@@ -47,6 +53,7 @@ class Model {
    * @returns {*}
    */
   delete(_id) {
+    Q.publish('database', 'delete', {action:'delete', collection: this.schema.modelName, id:_id});
     return this.schema.findByIdAndDelete(_id);
   }
 
