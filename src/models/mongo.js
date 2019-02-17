@@ -31,7 +31,7 @@ class Model {
     
     return newRecord.save()
       .then(savedRecord => {
-        Q.publish('database', 'create', {action:'create', collection: this.schema.modelName, _id:newRecord.id});
+        Q.publish('database', 'create', {action:'create', collection: this.schema.modelName, _id:newRecord.id, name:record.name});
         return savedRecord;
       });
   }
@@ -43,7 +43,7 @@ class Model {
    * @returns {*}
    */
   put(_id, record) {
-    Q.publish('database', 'update', {action:'update', collection: this.schema.modelName, id:_id});
+    Q.publish('database', 'update', {action:'update', collection: this.schema.modelName, id:_id, name:record.name});
     return this.schema.findByIdAndUpdate(_id, record, {new:true});
   }
 
@@ -53,7 +53,7 @@ class Model {
    * @returns {*}
    */
   delete(_id) {
-    Q.publish('database', 'delete', {action:'delete', collection: this.schema.modelName, id:_id});
+    Q.publish('database', 'delete', {action:'delete', collection: this.schema.modelName, _id:_id, name:_id.name});
     return this.schema.findByIdAndDelete(_id);
   }
 
