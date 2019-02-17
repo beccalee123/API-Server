@@ -51,7 +51,7 @@ class Model {
   put(_id, record) {
     return this.schema.findByIdAndUpdate(_id, record, {new:true})
       .then(updatedRecord => {
-        Q.publish('database', 'update', {action:'update', collection: this.schema.modelName, id:updatedRecord._id, name:updatedRecord.name});
+        Q.publish('database', 'update', {action:'update', collection: this.schema.modelName, _id:updatedRecord._id, name:updatedRecord.name});
         return updatedRecord;
       });
   }
